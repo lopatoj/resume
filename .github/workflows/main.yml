@@ -16,10 +16,9 @@ jobs:
         run: pdflatex resume.tex
       - name: Add to Repo
         run: |
-          git config --global user.name "Justin Lopato"
-          git config --global user.email "justin@lopato.org"
           git add resume.pdf
           git commit -m "compiled resume.pdf"
+          git push
                 
                 
             
