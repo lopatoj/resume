@@ -11,7 +11,7 @@ jobs:
         uses: zauguin/install-texlive@v3
         with:
           packages: >
-            l3build latex latex-bin luatex latex-bin-dev
+            l3build latex latex-bin luatex latex-bin-dev texlive-latex-base
       - name: Use TeX Live
         run: pdflatex resume.tex
       - name: Download a Build Artifact
