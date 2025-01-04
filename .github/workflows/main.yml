@@ -1,5 +1,7 @@
 name: Compile LaTex
 on: [push]
+permissions:
+  contents: write
 
 jobs:
   texlive:
