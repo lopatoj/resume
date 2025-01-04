@@ -9,19 +9,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Install TeX Live
-        uses: zauguin/install-texlive@v3
+      - name: JSONResume Convert
+  # You may pin to the exact commit or the version.
+  # uses: rvdwegen/action-jsonresume-convert@1a3bfb03c607b72281a44b481c74ac41bf0e2c35
+        uses: rvdwegen/action-jsonresume-convert@latest
         with:
-          packages: >
-            l3build latex latex-bin luatex latex-bin-dev scheme-basic
-      - name: Use TeX Live
-        run: pdflatex resume.tex
+          theme: flat
+          resume_filepath: resume.json
+          output_html_filepath: index.html
+          output_pdf_filepath: resume.pdf
       - name: Add to Repo
         run: |
           git config --global user.name "Justin Lopato"
           git config --global user.email "justin@lopato.org"
-          git add resume.pdf
-          git commit -m "compiled resume.pdf"
+          git add index.html resume.pdf
+          git commit -m "compiled resume.json"
           git push
                 
                 
