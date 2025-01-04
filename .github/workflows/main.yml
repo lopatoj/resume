@@ -1,0 +1,2 @@
+- name: LaTeX Render Action for Github
+  uses: AffineParameter/latex-action@a0.2.1
