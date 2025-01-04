@@ -13,7 +13,7 @@ jobs:
           packages: >
             l3build latex latex-bin luatex latex-bin-dev
       - name: Use TeX Live
-        run: tex resume.tex
+        run: pdflatex resume.tex
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.8
         with:
