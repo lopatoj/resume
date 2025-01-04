@@ -1,0 +1,96 @@
+{
+  "basics": {
+    "name": "Justin Lopato",
+    "label": "CS Student",
+    "image": "",
+    "email": "justin@lopato.org",
+    "phone": "(512) 661-8595",
+    "url": "https://lopatoj.github.io",
+    "summary": "A summary of John Doe…",
+    "location": {
+      "address": "2712 Broadway St",
+      "postalCode": "CA 94115",
+      "city": "San Francisco",
+      "countryCode": "US",
+      "region": "California"
+    },
+    "profiles": [{
+      "network": "LinkedIn",
+      "username": "lopatoj",
+      "url": "https://www.linkedin.com/in/lopatoj"
+    }]
+  },
+  "work": [{
+    "name": "UT Austin CS Summer Academies",
+    "position": "Student Instructor/Counselor",
+    "url": "https://www.cs.utexas.edu/engage/outreach/academies",
+    "startDate": "2024-05-01",
+    "endDate": "2024-07-14",
+    "summary": "Description…",
+    "highlights": [
+      "Started the company"
+    ]
+  }],
+  "volunteer": [{
+    "organization": "Organization",
+    "position": "Volunteer",
+    "url": "https://organization.com/",
+    "startDate": "2012-01-01",
+    "endDate": "2013-01-01",
+    "summary": "Description…",
+    "highlights": [
+      "Awarded 'Volunteer of the Month'"
+    ]
+  }],
+  "education": [{
+    "institution": "Rice University",
+    "url": "https://csweb.rice.edu/",
+    "area": "Computer Science",
+    "studyType": "Bachelor",
+    "startDate": "2023-01-01",
+    "endDate": "2027-01-01",
+    "score": "3.82",
+    "courses": []
+  }],
+  "awards": [{
+    "title": "Presidents",
+    "date": "2014-11-01",
+    "awarder": "Rice University",
+    "summary": "There is no spoon."
+  }],
+  "certificates": [{
+    "name": "Certificate",
+    "date": "2021-11-07",
+    "issuer": "Company",
+    "url": "https://certificate.com"
+  }],
+  "publications": [],
+  "skills": [{
+    "name": "Web Development",
+    "level": "Master",
+    "keywords": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ]
+  }],
+  "languages": [],
+  "interests": [{
+    "name": "Wildlife",
+    "keywords": [
+      "Ferrets",
+      "Unicorns"
+    ]
+  }],
+  "references": [],
+  "projects": [{
+    "name": "Project",
+    "startDate": "2019-01-01",
+    "endDate": "2021-01-01",
+    "description": "Description...",
+    "highlights": [
+      "Won award at AIHacks 2016"
+    ],
+    "url": "https://project.com/"
+  }]
+}
