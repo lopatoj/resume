@@ -12,7 +12,4 @@ jobs:
           root_file: resume.tex
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.8
-        with:
-          # Name of the artifact to download. If unspecified, all artifacts for the run are downloaded.
-          name: resume.pdf
           
