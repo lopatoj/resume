@@ -14,9 +14,12 @@ jobs:
             l3build latex latex-bin luatex latex-bin-dev scheme-basic
       - name: Use TeX Live
         run: pdflatex resume.tex
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.8
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: resume.pdf
-          
-      
+          path: resume.pdf
+          overwrite: true
+                
+                
+            
