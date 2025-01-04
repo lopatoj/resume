@@ -14,12 +14,13 @@ jobs:
             l3build latex latex-bin luatex latex-bin-dev scheme-basic
       - name: Use TeX Live
         run: pdflatex resume.tex
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: resume.pdf
-          path: resume.pdf
-          overwrite: true
+      - name: Add to Repo
+        run: |
+          git config --global user.name "Justin Lopato"
+          git config --global user.email "justin@lopato.org"
+          git add resume.pdf
+          git commit -m "compiled resume.pdf"
+          git push
                 
                 
             
