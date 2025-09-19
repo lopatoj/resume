@@ -1,0 +1,20 @@
+cv:
+  name: Justin Lopato
+  location: Houston, TX
+  email: justin@lopato.org
+  phone: tel:+1-512-661-8595
+  social_networks:
+    - network: LinkedIn
+      username: lopatoj
+    - network: GitHub
+      username: lopatoj
+  sections:
+    education:
+      - institution: Rice University
+        area: Computer Science
+        degree: BS
+        location: Houston, TX, USA
+        start_date: 2023-08
+        end_date: present
+        highlights:
+          - Learning the ins and outs of robotics software
