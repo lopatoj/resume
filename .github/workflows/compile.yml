@@ -18,7 +18,7 @@ jobs:
         uses: mfinelli/setup-imagemagick@v1
 
       - name: Convert to png
-        run: magick -density 300 resume.pdf -quality 90 resume.png
+        run: convert -density 300 resume.pdf -quality 90 resume.png
 
       - name: Commit and push changes
         run: |
