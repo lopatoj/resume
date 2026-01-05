@@ -12,11 +12,18 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: resume.tex # Specify your main .tex file here
+      
+      - name: Setup ImageMagick
+        # Use the action to install ImageMagick
+        uses: mfinelli/setup-imagemagick@v1
+
+      - name: Convert to png
+        run: magick -density 300 resume.pdf -quality 90 resume.png
 
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add resume.pdf
+          git add resume.pdf resume.png
           git commit -m "Pushing compiled resume"
           git push
