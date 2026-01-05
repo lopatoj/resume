@@ -1,0 +1,129 @@
+% -------------- Resume ---------------
+\documentclass{resume}
+
+\setlength{\tabcolsep}{0pt}
+
+\begin{document}
+
+% --------- Contact Information -----------
+\introduction[
+    fullname={Justin Lopato},
+    email={justin@lopato.org},
+    phone={(512) 661-8595},
+    linkedin={lopatoj},
+    github={lopatoj},
+    website={lopa.to}
+]
+
+% --------- Summary -----------
+% CS Junior with hands-on experience in robotics research, web development, and technical instruction. Seeking Summer 2026 internship opportunities.
+
+% --------- Education ---------
+\begin{educationSection}{Education}
+    \educationItem[
+        university={Rice University},
+        college={George R. Brown School of Engineering and Computing},
+        graduation={May 2027},
+        gpa={3.77},
+        program={Bachelor of Science in Computer Science},
+        coursework={Introduction to Modern Robotics, Computer Systems, Concurrent Program Design},
+    ]
+\end{educationSection}
+
+\begin{experienceSection}{Work experience}
+    \experienceItem[
+        company={Kavraki Computational Robotics Lab},
+        location={Houston, TX},
+        position={Research Assistant},
+        duration={August 2025 – Present}
+    ]
+    \begin{itemize}
+        \vspace{-0.2em}
+        \itemsep -6pt
+        \item Developed a trajectory visualization system for the Hello Robot Stretch using the Rerun SDK, which accelerated the debugging and analysis of motion planning algorithms
+        \item Compared multiple implementations of SLAM mapping systems for Stretch on efficiency, usability, and data structure, to evaluate application fit for various research projects
+        \item Implemented a geometric path planner which complied with motion constraints of default Stretch trajectory controller, eliminating the need to create a new controller to bypass constraints
+    \end{itemize}
+    \experienceItem[
+        company={Rice University},
+        location={Houston, TX},
+        position={Computer Systems Teaching Assistant},
+        duration={August 2025 – December 2025}
+    ]
+    \begin{itemize}
+        \vspace{-0.2em}
+        \itemsep -6pt
+        \item Mentored over 15 students in weekly lab sections and office hours, clarifying complex, low-level concepts such as bit-level data representation, x86 assembly, and the memory hierarchy
+        \item Provided constructive feedback on students’ C programming assignments, focusing on correctness, efficiency, and debugging techniques using tools like GDB and Valgrind
+        \item Graded exams and assignments with a focus on transparency and fairness, ensuring students understood why they lost points so they could improve, rather than just pointing out errors
+
+    \end{itemize}
+    \experienceItem[
+        company={Rice ELITE Tech Camp},
+        location={Houston, TX},
+        position={Robotics Programming Instructor},
+        duration={May 2025 – July 2025}
+    ]
+    \begin{itemize}
+        \vspace{-0.2em}
+        \itemsep -6pt
+        \item Taught high school classes of 30+ students programming fundamentals in Arduino and Python classes during week-long engineering summer camps managed by the Rice Center for Engineering Leadership
+        \item Produced lecture materials for the entire C++ curriculum, providing a solid baseline in syntax, data types, functions and arrays, as well as Arduino specific libraries like the GPIO and Serial interfaces
+        \item Implemented custom Arduino library for stepper motor control, to aide students’ use of steppers for final project
+    \end{itemize}
+\end{experienceSection}
+
+\begin{experienceSection}{Activities \& Projects}
+    \projectItem[
+        title={Rice Robotics Club: R\&D CS Lead},
+        keyHighlight={Serving as lead for the software side of a quadruped robot project, with the goal of applying machine learning to a novel mechanical design built from scratch},
+        duration={February 2024 – Present}
+    ]
+    \begin{itemize}
+        \vspace{-0.5em}
+        \itemsep -6pt {}
+        \item Increased undergraduate member count of R\&D CS team 4x through effective and consistent communication
+        \item Revitalized team documentation to provide clear description of project goals and progress, as well as providing resources for new members to learn robotics specific terms, concepts, and tools
+        \item Implemented prototype reinforcement learning training environment for simulation of servo-based quadruped robot
+        \item Developed testing code for first iteration of quadruped robot leg, which enabled non-programming members to send motion commands to robot leg via a GUI
+        \item Acquired holistic familiarity with non-CS robotics skills through robot testing, including physics, electronics, and safety
+        \item Participated in weekly planning sessions and progress tracking, resulting in meeting all project milestones to date
+
+    \end{itemize}
+    \projectItem[
+        title={Social Accountability Web App (React, Express, MongoDB)},
+        duration={September 2024},
+        keyHighlight={Created an application providing mutual academic accountability to student pairs for RiceHacks 2024 hackathon}
+    ]
+    \begin{itemize}
+        \vspace{-0.5em}
+        \itemsep -6pt {}
+        \item Achieved 70\% match satisfaction based on user feedback from other hackathon participants
+        \item Engineered vector embedding similarity system to match users with similar academic interests
+        \item Implemented real-time chat functionality via WebSockets, enabling communication between matched users
+    \end{itemize}
+\end{experienceSection}
+
+\sectionTitle{Technical Skills}
+\begin{tabular}{ll}
+    \textbf{Programming:} & ~~~Python, C, C++, TypeScript, Java, Go, \LaTeX, Docker, Data structures, Software design patterns \\
+    \textbf{Software:} & ~~~Github, Git, Onshape, MoveIt, ROS2, OMPL, Overleaf, Postman, Notion, Slack, Ubuntu \\
+\end{tabular}
+
+\begin{experienceSection}{Awards}
+    \projectItem[
+    title=Hispanic Scholarship Fund - Scholar,
+    duration={June 2023, June 2024, June 2025}
+    ]
+    \projectItem[
+    title=Rice President’s Honor Roll,
+    duration={Fall 2023, Fall 2024}
+    ]
+    \projectItem[
+    title=Eagle Scout Award,
+    duration=October 2022
+    ]
+\end{experienceSection}
+
+\end{document}
+ 
