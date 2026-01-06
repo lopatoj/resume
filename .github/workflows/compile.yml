@@ -13,14 +13,16 @@ jobs:
         with:
           root_file: resume.tex # Specify your main .tex file here
       
-      - name: Install ImageMagick
+      - name: Install ImageMagick and Pdfcrop
         run: |
           sudo apt update
           sudo apt upgrade
-          sudo apt install imagemagick ghostscript
+          sudo apt install imagemagick ghostscript pdfcrop
 
-      - name: Convert to png
-        run: convert -density 300 resume.pdf -quality 90 resume.png
+      - name: Crop and convert to png
+        run: |
+          pdfcrop resume.pdf resume_cropped.pdf
+          convert -density 300 resume_cropped.pdf -quality 90 resume.png
 
       - name: Commit and push changes
         run: |
