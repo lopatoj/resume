@@ -13,9 +13,11 @@ jobs:
         with:
           root_file: resume.tex # Specify your main .tex file here
       
-      - name: Setup ImageMagick
-        # Use the action to install ImageMagick
-        uses: mfinelli/setup-imagemagick@v1
+      - name: Install ImageMagick
+        run: |
+          sudo apt update
+          sudo apt upgrade
+          sudo apt install imagemagick ghostscript
 
       - name: Convert to png
         run: convert -density 300 resume.pdf -quality 90 resume.png
