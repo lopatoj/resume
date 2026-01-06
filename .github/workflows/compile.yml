@@ -8,20 +8,20 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v2
+      - uses: xu-cheng/texlive-action@v3
         with:
-          root_file: resume.tex # Specify your main .tex file here
+          run: |
+            latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode resume.tex
+            pdfcrop resume.pdf resume_cropped.pdf
       
       - name: Install ImageMagick and Pdfcrop
         run: |
           sudo apt update
           sudo apt upgrade
-          sudo apt install imagemagick ghostscript pdfcrop
+          sudo apt install imagemagick ghostscript
 
       - name: Crop and convert to png
         run: |
-          pdfcrop resume.pdf resume_cropped.pdf
           convert -density 300 resume_cropped.pdf -quality 90 resume.png
 
       - name: Commit and push changes
