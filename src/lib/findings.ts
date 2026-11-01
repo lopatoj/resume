@@ -1,6 +1,6 @@
 import { plainResumeText } from '#lib/resume-text.ts';
 import { isFlagged } from './checks.ts';
-import { COVERED, coverageOf } from './guidance.ts';
+import { COVERED, coverageOf, pageSources } from './guidance.ts';
 import { textHash } from './hash.ts';
 import { selectByRelevance, selectSkills } from './selection.ts';
 import type { Application, Experience, Layout, SkillGroup } from './types.ts';
@@ -28,9 +28,21 @@ export const SHORT_LAST_LINE = 0.3;
 
 /**
  * Height of an experience's header and spacing, in points, on top of its bullets' lines.
- * Measured from the template; `pnpm layout:calibrate` checks these still hold.
+ * Measured from the template; tests/integration/layout.test.ts checks these still hold.
  */
 export const SECTION_OVERHEAD_PT = { experience: 19.5, project: 19 } as const;
+
+/**
+ * Height of a section title ("Experience", "Projects & Leadership") with its rule and
+ * spacing, in points: paid when the first experience of a kind is added to the page.
+ */
+export const SECTION_TITLE_PT = 20.83;
+
+/** Points it costs to put an experience of `kind` on the page, given what's there already. */
+function addSectionPt(job: Application, register: Experience[], kind: Experience['kind']) {
+	const kindOnPage = job.selection.some((s) => register.find((e) => e.id === s.experience)?.kind === kind);
+	return SECTION_OVERHEAD_PT[kind] + (kindOnPage ? 0 : SECTION_TITLE_PT);
+}
 
 const plain = plainResumeText;
 
@@ -98,6 +110,7 @@ export function contentFindings(
 		selectByRelevance(register, relevance, current.length, job.selection).flatMap((s) => s.bullets.map((b) => b.bullet))
 	);
 	const coverage = coverageOf(job, register, allSkills);
+	const sources = pageSources(job, register, allSkills);
 	const cov = job.coverage ?? {};
 	const open = coverage.filter((c) => c.status === 'missing' || c.status === 'weak');
 	const score = (id: string) => relevance.bullets[id]?.score ?? 0;
@@ -119,7 +132,7 @@ export function contentFindings(
 				(covers.length ? ` · covers ${covers.map((c) => `“${c.requirement.text.slice(0, 48)}${c.requirement.text.length > 48 ? '…' : ''}”`).join(', ')}` : '') +
 				(newSection ? ` · adds ${plain(exp.kind === 'experience' ? exp.company : exp.title)} to the page` : ''),
 			...(measured
-				? { lines: measured.lines + (newSection ? SECTION_OVERHEAD_PT[exp.kind] : layout.itemGap) / layout.lineHeight }
+				? { lines: measured.lines + (newSection ? addSectionPt(job, register, exp.kind) : layout.itemGap) / layout.lineHeight }
 				: {}),
 			apply: (j) => withBullet(j, register, id)
 		});
@@ -127,7 +140,15 @@ export function contentFindings(
 
 	for (const b of current) {
 		if (picks.has(b.bullet)) continue;
-		const only = coverage.filter((c) => c.best?.id === b.bullet && c.status === 'covered');
+		// Requirements this bullet covers that nothing else on the page (bullets, skills) does.
+		const covers = (s: { hash: string } | undefined, req: string) => (cov[`${req}:${s?.hash}`] ?? 0) >= COVERED;
+		const own = sources.find((s) => s.id === b.bullet);
+		const only = coverage.filter(
+			(c) =>
+				c.status === 'covered' &&
+				covers(own, c.requirement.id) &&
+				!sources.some((s) => s.id !== b.bullet && covers(s, c.requirement.id))
+		);
 		const lines = layout.bullets[b.bullet]?.lines;
 		findings.push({
 			id: `remove:${b.bullet}`,
@@ -255,7 +276,7 @@ export function fitFindings(job: Application, register: Experience[], layout: La
 			.map((c) => ({
 				...c,
 				newSection: !sections.has(c.e.id),
-				cost: c.m.lines + (sections.has(c.e.id) ? layout.itemGap : SECTION_OVERHEAD_PT[c.e.kind]) / layout.lineHeight
+				cost: c.m.lines + (sections.has(c.e.id) ? layout.itemGap : addSectionPt(job, register, c.e.kind)) / layout.lineHeight
 			}))
 			.filter((c) => c.cost <= state.lines)
 			.sort((a, b) => (score(b.id) ?? 0) - (score(a.id) ?? 0));

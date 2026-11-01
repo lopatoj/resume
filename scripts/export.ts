@@ -5,7 +5,7 @@ import path from 'node:path';
 import { Document, isScalar, visit } from 'yaml';
 import { listJobs, loadJob, loadProfile, loadRegister } from '../src/lib/server/store.ts';
 
-const DATA = path.resolve('data');
+const DATA = path.resolve(process.env.DATA_DIR ?? 'data');
 
 async function writeYaml(file: string, value: unknown, header: string) {
 	const doc = new Document(value);

@@ -1,0 +1,18 @@
+title: Web Engineer
+company: Acme
+description: |-
+  Acme builds tools for small businesses.
+
+  Requirements:
+  - Experience building web applications with TypeScript and React
+  - Write automated tests and work with CI pipelines
+  - Comfortable with SQL databases
+  Nice to have:
+  - Python scripting
+  - Experience mentoring or onboarding teammates
+  We offer health insurance and remote work.
+selection:
+  - experience: northwind
+    bullets: [ { bullet: northwind-api }, { bullet: northwind-dashboard } ]
+  - experience: robot-club
+    bullets: [ { bullet: club-vision } ]

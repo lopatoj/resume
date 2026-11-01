@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+// Test wrapper around tests/support/bin/claude that records how it was started (arguments,
+// working directory and selected environment variables) as JSON in $CLAUDE_CALL_LOG,
+// then runs the stand-in with the same arguments and stdin.
+import { spawnSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+import path from 'node:path';
+
+const args = process.argv.slice(2);
+const keys = ['ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'CLAUDE_CODE_USE_BEDROCK', 'CLAUDE_CODE_USE_VERTEX', 'CLAUDE_CODE_USE_FOUNDRY'];
+if (process.env.CLAUDE_CALL_LOG) {
+	const env = Object.fromEntries(keys.filter((k) => k in process.env).map((k) => [k, process.env[k]]));
+	writeFileSync(process.env.CLAUDE_CALL_LOG, JSON.stringify({ args, cwd: process.cwd(), env }));
+}
+const fake = path.resolve(import.meta.dirname, '../../support/bin/claude');
+const { status } = spawnSync(process.execPath, [fake, ...args], { stdio: 'inherit' });
+process.exit(status ?? 1);

@@ -1,0 +1,11 @@
+# The general-purpose resume. New jobs start from this selection.
+title: General
+company: ''
+description: ''
+selection:
+  - experience: northwind
+    bullets: [ { bullet: northwind-api }, { bullet: northwind-dashboard }, { bullet: northwind-sql } ]
+  - experience: campus-it
+    bullets: [ { bullet: campus-scripts } ]
+  - experience: robot-club
+    bullets: [ { bullet: club-vision } ]

@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+// Stand-in for the Claude Code CLI (`claude -p --output-format stream-json ... --json-schema`),
+// for tests. Put tests/support/bin first on PATH. Deterministic; never calls a model.
+//   FAKE_CLAUDE_DELAY_MS  how long to "think" before answering (default 1000)
+//   FAKE_CLAUDE_FAIL=1    answer with an error result instead
+const args = process.argv.slice(2);
+const schema = JSON.parse(args[args.indexOf('--json-schema') + 1] ?? '{}');
+const prompt = await new Promise((resolve) => {
+	let s = '';
+	process.stdin.on('data', (d) => (s += d));
+	process.stdin.on('end', () => resolve(s));
+});
+const out = (o) => process.stdout.write(JSON.stringify(o) + '\n');
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/** Placeholder values that satisfy a JSON schema. */
+function fill(s) {
+	if (s.type === 'object') return Object.fromEntries(Object.entries(s.properties ?? {}).map(([k, v]) => [k, fill(v)]));
+	if (s.type === 'array') return [];
+	if (s.type === 'number' || s.type === 'integer') return 0;
+	if (s.type === 'boolean') return false;
+	if (Array.isArray(s.type)) return null;
+	return 'fake';
+}
+
+const props = Object.keys(schema.properties ?? {});
+let answer = fill(schema);
+if (['summary', 'notes', 'gaps'].every((k) => props.includes(k))) {
+	// Claude's posting analysis: use ids that really appear in the prompt.
+	const requirements = prompt.split('<requirements>')[1]?.split('</requirements>')[0] ?? '';
+	const reqIds = [...requirements.matchAll(/id: ['"]?([0-9a-f]{8})/g)].map((m) => m[1]);
+	const register = prompt.split('<register>')[1] ?? '';
+	const bulletIds = [...register.matchAll(/^\s*- id: ([a-z0-9][a-z0-9-]*)\s*$/gm)].map((m) => m[1]);
+	answer = {
+		summary: 'Fake analysis: the posting emphasizes web development and testing.',
+		notes: bulletIds.slice(0, 2).map((bulletId) => ({
+			bulletId,
+			requirementIds: reqIds.slice(0, 1),
+			whatToChange: `Fake note for ${bulletId}: say who used it and what changed.`,
+			postingTerms: ['automated tests', 'a phrase that is not in the posting']
+		})),
+		gaps: reqIds.slice(0, 6).map((requirementId) => ({ requirementId, question: `Fake question about ${requirementId}?` }))
+	};
+}
+
+out({ type: 'system', subtype: 'init' });
+out({ type: 'stream_event', event: { type: 'content_block_start', index: 0, content_block: { type: 'thinking' } } });
+await sleep(Number(process.env.FAKE_CLAUDE_DELAY_MS ?? 1000));
+if (process.env.FAKE_CLAUDE_FAIL === '1') {
+	out({ type: 'result', subtype: 'error_during_execution', is_error: true, errors: ['Fake failure'] });
+} else {
+	const json = JSON.stringify(answer);
+	out({ type: 'stream_event', event: { type: 'content_block_start', index: 1, content_block: { type: 'tool_use', name: 'StructuredOutput' } } });
+	out({ type: 'stream_event', event: { type: 'content_block_delta', index: 1, delta: { type: 'input_json_delta', partial_json: json } } });
+	out({ type: 'result', subtype: 'success', is_error: false, result: '', structured_output: answer });
+}

@@ -31,8 +31,14 @@ Local SvelteKit app that tailors a LaTeX resume to job postings. See README.md f
 - Jev (TypeSafe, `TYPESAFE_API_KEY`) scores relevance and checks rewrites (`src/lib/server/jev.ts`). Live calls cost the user's credit; keep them small. `pnpm jev:eval` is the rewrite-check regression test.
 - Never send profile contact details or education to any AI provider or Jev.
 
-## Checking work
+## Testing
 
-- `pnpm check` must pass with no errors or warnings.
-- Test against an isolated copy of the project on another port (e.g. 5199) so the user's dev server on 5173 and their data aren't touched. If the copy symlinks `node_modules`, give its Vite config its own `cacheDir` (e.g. `/tmp/...`): otherwise it rewrites `node_modules/.vite`, which the user's running server serves from, and their browser ends up with two copies of Svelte (hydration crashes like `next_sibling_getter is undefined`).
-- UI changes: verify in headless Chromium (Playwright browsers are in `~/.cache/ms-playwright`) and look at screenshots.
+Every change comes with tests; run them before calling work done.
+
+- `pnpm check`: types and Svelte diagnostics, no errors or warnings.
+- `pnpm test`: Vitest. `unit` (tests/unit, pure logic, fast) and `integration` (tests/integration: each file gets a scratch SQLite DB seeded from the fictional fixtures in tests/fixtures/data, plus real pdflatex compiles). Never the user's `data/resume.db`.
+- `pnpm test:e2e`: Playwright in Chromium and Firefox against a fully isolated **production build** started by tests/e2e/serve.ts (dev-server module reloading made browsers fail mid-test): scratch DB, private Vite/SvelteKit/PDF caches, the fake Jev API (tests/support/fake-jev.ts) and the stand-in Claude CLI (tests/support/bin/claude). No real AI calls, no credit spent. Set `E2E_PORT`/`FAKE_JEV_PORT` to run more than one session at once.
+- When a test exposes an app bug, fix the bug; don't weaken the test.
+- Keep tests on the fictional fixtures. Add fixture data there rather than reading the user's data.
+- Isolation matters: never point tests or test servers at `node_modules/.vite`, `.cache` or `data/resume.db`. Sharing `node_modules/.vite` with the user's running dev server once loaded two copies of Svelte in their browser (hydration crash `next_sibling_getter is undefined`); the harness's env hooks (`VITE_CACHE_DIR`, `SVELTEKIT_OUT_DIR`, `BUILD_OUT_DIR`, `RESUME_CACHE_DIR`, `DATABASE_URL`, `DATA_DIR`) exist for this. Each spec file resets the e2e database to the fixtures (tests/support/e2e-state.ts).
+- Look at screenshots for UI changes (Playwright keeps traces and screenshots of failures in test-results/).

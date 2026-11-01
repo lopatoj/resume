@@ -9,7 +9,8 @@ import type { Application, Experience, Layout, LayoutIssue, Profile, SelectedBul
 
 const run = promisify(execFile);
 const LATEX = path.resolve('latex');
-const CACHE = path.resolve('.cache');
+// Built PDFs for previews; tests point this elsewhere so they don't touch the user's.
+const CACHE = path.resolve(process.env.RESUME_CACHE_DIR ?? '.cache');
 
 /** A bullet whose last line is filled less than this is flagged as a widow. */
 export const WIDOW_FILL = 0.3;

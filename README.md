@@ -62,8 +62,18 @@ Optionally, **Jev** (`TYPESAFE_API_KEY`) separately scores relevance, tags posti
 
 ### Provider tests
 
-- `pnpm llm:test` — offline regression tests using mocked API responses and a stand-in Claude CLI; no keys, API usage, or database writes.
+- Offline provider tests (mocked API responses and a stand-in Claude CLI; no keys or API usage) are part of `pnpm test:unit`.
 - `pnpm llm:check` — explicit live connectivity check for the selected provider using a small synthetic prompt; consumes that provider's quota/billing.
+
+## Testing
+
+```sh
+pnpm check       # types and Svelte diagnostics (app and tests)
+pnpm test        # Vitest: unit (pure logic) + integration (scratch SQLite DB, real pdflatex)
+pnpm test:e2e    # Playwright in Chromium and Firefox against an isolated app
+```
+
+Tests run on a fictional resume in `tests/fixtures/data`, never your database. The end-to-end suite starts its own app with a scratch database, private caches, a fake Jev API (`tests/support/fake-jev.ts`) and a stand-in Claude CLI (`tests/support/bin/claude`), so it makes no real AI calls and can run while your dev server is up. First run: `pnpm exec playwright install chromium firefox`.
 
 ## Navigation
 
@@ -86,4 +96,3 @@ Everything is undoable (Ctrl+Z). Rewording happens in the Register, in your own 
 - `pnpm jev:compare <job>` — scores a job's posting with Jev and compares Jev's picks with the job's saved selection.
 - `pnpm jev:check-variants [--all]` — checks rewrites that haven't been checked (or all of them) and stores the verdicts.
 - `pnpm jev:eval` — regression test for the rewrite check: deliberately unfaithful and faithful rewrites with expected outcomes.
-- `pnpm layout:calibrate` — checks the layout measurements (line heights, section overheads) against real compiles.

@@ -147,7 +147,12 @@ async function writeExperience(tx: Tx, e: Experience, sortOrder: number) {
 		const variants = b.variants ?? [];
 		await tx.variant.deleteMany({ where: { bulletId: b.id, id: { notIn: variants.map((v) => v.id) } } });
 		for (const [vi, v] of variants.entries()) {
-			const check = storedVariant.get(v.id) === v.text && storedBullet.get(b.id) === b.text ? v.check : undefined;
+			// Clear the verdict only when the text it judged has changed in the database; a
+			// fresh import (nothing stored yet) keeps the verdicts it brings.
+			const changed =
+				(storedVariant.has(v.id) && storedVariant.get(v.id) !== v.text) ||
+				(storedBullet.has(b.id) && storedBullet.get(b.id) !== b.text);
+			const check = changed ? undefined : v.check;
 			const data = {
 				text: v.text,
 				sortOrder: vi,

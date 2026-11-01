@@ -7,7 +7,7 @@ import { db } from '../src/lib/server/db.ts';
 import { saveAnalysis, saveJob, saveProfile, saveRegister } from '../src/lib/server/store.ts';
 import type { Application, Experience, Profile } from '../src/lib/types.ts';
 
-const DATA = path.resolve('data');
+const DATA = path.resolve(process.env.DATA_DIR ?? 'data');
 const read = async <T>(file: string) => parse(await readFile(path.join(DATA, file), 'utf8')) as T;
 
 const files = (await readdir(path.join(DATA, 'jobs'))).filter((f) => f.endsWith('.yaml'));

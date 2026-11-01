@@ -1,0 +1,52 @@
+# Fictional register for tests. Bullet text is LaTeX.
+- id: northwind
+  kind: experience
+  company: Northwind Labs
+  location: Springfield
+  position: Software Engineering Intern
+  duration: June 2026 – August 2026
+  bullets:
+    - id: northwind-api
+      text: Built a TypeScript REST API for order tracking used by 3 internal teams, with integration tests in CI
+      tags: [ typescript, api, testing, ci ]
+    - id: northwind-dashboard
+      text: Shipped a React dashboard that cut weekly report preparation from 2 hours to 15 minutes for operations staff
+      tags: [ react, frontend, dashboards ]
+      variants:
+        - id: northwind-dashboard.v1
+          text: Shipped a React dashboard that cut weekly reporting from 2 hours to 15 minutes
+    - id: northwind-sql
+      text: Optimized PostgreSQL queries behind the search page, reducing median latency by 40\% across the most common filters used
+      tags: [ sql, postgresql, performance ]
+- id: campus-it
+  kind: experience
+  company: Campus IT Services
+  location: Springfield
+  position: Student Developer
+  duration: September 2025 – May 2026
+  bullets:
+    - id: campus-scripts
+      text: Automated account provisioning with Python scripts, removing a manual step for 200+ new students each term
+      tags: [ python, automation ]
+    - id: campus-docs
+      text: Wrote runbooks for recurring support issues and onboarded two new student developers
+      tags: [ documentation, mentoring ]
+- id: robot-club
+  kind: project
+  title: 'Robotics Club: Software Lead'
+  duration: 2024 – Present
+  bullets:
+    - id: club-vision
+      text: Led a five-person team building a C++ vision pipeline for an autonomous rover competition
+      tags: [ c++, robotics, leadership ]
+    - id: club-sim
+      text: Set up a simulation workflow so the team could test navigation code before every field trial
+      tags: [ simulation, testing, robotics ]
+- id: study-app
+  kind: project
+  title: Study Buddy Web App
+  duration: Spring 2025
+  bullets:
+    - id: study-match
+      text: Built a full-stack app in React and Node.js that pairs students into study groups by course and schedule
+      tags: [ react, nodejs, full-stack ]

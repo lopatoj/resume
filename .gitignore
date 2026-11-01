@@ -44,3 +44,11 @@ vite.config.ts.timestamp-*
 
 # Local conversation exports (reference only, not project source)
 /LaTeX resume tailoring system.md
+
+# Tests
+/test-results
+/playwright-report
+/blob-report
+/coverage
+/.svelte-kit-e2e*
+/.e2e-build*

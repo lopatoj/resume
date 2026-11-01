@@ -18,6 +18,8 @@ function isHeading(line: string): boolean {
 	const text = line.replace(BULLET, '').trim();
 	if (!text || text.length > 60) return false;
 	if (/:$/.test(text)) return true;
+	// A bulleted line is a list item ("- Python scripting"), however short.
+	if (BULLET.test(line)) return false;
 	if (/[.!?]$/.test(text)) return false;
 	// A few words without punctuation ("Job requirements", "What you'll do").
 	if (text.split(/\s+/).length <= 4 && !/[,;]/.test(text)) return true;
