@@ -10,7 +10,7 @@ Data lives in a SQLite database (`data/resume.db`, managed with Prisma; schema i
 - **Profile** — contact info, education, skills, awards. Contact details and education are never sent to the analysis model or Jev. No UI yet: edit with `pnpm db:studio`, or edit `data/profile.yaml` and run `pnpm db:import`.
 - **Jobs** — one per application: the posting plus which bullets/variants/skills to use. `base` is the general resume and the starting point for new jobs.
 
-`data/*.yaml` is a readable snapshot of the database. The database file is gitignored, so run `pnpm db:export` before committing; on a fresh clone, `pnpm db:import` rebuilds the database from it.
+`data/*.yaml` is a readable snapshot of the profile, register and base resume. The database file is gitignored, so run `pnpm db:export` before committing; on a fresh clone, `pnpm db:import` rebuilds the database from it. Job applications stay private: they live in the database, and `db:export` backs them up (with which job each variant was written for) to the gitignored `data/local/`, which `db:import` reads back when present.
 
 - `latex/resume.cls` — the resume class. `latex/tailor.sty` measures each bullet's line count and last-line fill during compilation.
 

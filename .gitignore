@@ -37,6 +37,8 @@ vite.config.ts.timestamp-*
 
 # Database (data/*.yaml is the committed snapshot; see pnpm db:export)
 /data/*.db
+# Job applications are private: kept in the database, backed up here by db:export.
+/data/local/
 /data/*.db-journal
 /data/*.db-wal
 /data/*.db-shm

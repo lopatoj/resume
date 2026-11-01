@@ -20,7 +20,7 @@ Local SvelteKit app that tailors a LaTeX resume to job postings. See README.md f
 - SvelteKit 3 + Svelte 5 runes, TypeScript, Vite 8, `pnpm`. adapter-node.
 - Imports use the `#lib/...` alias **with the `.ts` extension** (e.g. `#lib/server/store.ts`), and relative imports keep it too, so server modules also run directly under Node (`node scripts/...ts`).
 - Environment variables are declared in `src/env.ts` and imported from `$app/env/private` (SvelteKit 3). They are optional so the app runs without them.
-- Data: SQLite via Prisma 7 (`prisma/schema.prisma`; client generated into `src/lib/server/prisma`, gitignored). After schema changes run `pnpm db:migrate` (migrates and regenerates). `data/*.yaml` is the committed snapshot: `pnpm db:export` before committing, `pnpm db:import` to rebuild the database.
+- Data: SQLite via Prisma 7 (`prisma/schema.prisma`; client generated into `src/lib/server/prisma`, gitignored). After schema changes run `pnpm db:migrate` (migrates and regenerates). `data/*.yaml` is the committed snapshot of the profile, register and base resume: `pnpm db:export` before committing, `pnpm db:import` to rebuild the database. **Job applications are private**: they live in the database; `db:export` backs them up (with which job each variant came from) to the gitignored `data/local/`, and committed files never name them. The GitHub repo is public.
 - All resume text (bullets, variants, profile) is LaTeX source; escape `& % # $ _`.
 - LaTeX: `latex/resume.cls` and `latex/tailor.sty` (bullet measurement). Rendering and compilation live in `src/lib/server/latex.ts`.
 

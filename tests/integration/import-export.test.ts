@@ -86,27 +86,50 @@ beforeAll(async () => {
 });
 
 describe('db:export', () => {
-	test('writes the profile, the register and one file per job, removing files of deleted jobs', async () => {
+	test('commits the profile, the register and the base resume; other jobs go to the private local/ backup', async () => {
 		expect(Object.keys(await readTree(exportA)).sort()).toEqual([
 			'experiences.yaml',
-			'jobs/acme-web-engineer.yaml',
 			'jobs/base.yaml',
-			'jobs/initech-data.yaml',
+			'local/jobs/acme-web-engineer.yaml',
+			'local/jobs/initech-data.yaml',
+			'local/variant-jobs.yaml',
 			'profile.yaml'
 		]);
+	});
+
+	// Job applications are private: nothing outside local/ (which is gitignored) may name them.
+	test('no committed file names a job application, its posting, or which job a variant came from', async () => {
+		const committed = Object.entries(await readTree(exportA)).filter(([f]) => !f.startsWith('local/'));
+		for (const [file, text] of committed) {
+			for (const leak of ['Initech', 'initech-data', 'acme-web-engineer', 'Acme builds tools', 'Comfortable with SQL databases']) {
+				expect(text, `${file} mentions ${leak}`).not.toContain(leak);
+			}
+			expect(text, file).not.toMatch(/^\s*job:/m);
+		}
 	});
 
 	test('the YAML holds exactly what the store loads', async () => {
 		const files = await readTree(exportA);
 		expect(parse(files['profile.yaml'])).toEqual(await loadProfile());
-		expect(parse(files['experiences.yaml'])).toEqual(await loadRegister());
-		for (const { slug } of await listJobs()) expect(parse(files[`jobs/${slug}.yaml`]), slug).toEqual(await loadJob(slug));
+		// The register is committed without job links; those are in the private backup.
+		const register = await loadRegister();
+		const links: Record<string, string> = {};
+		for (const v of register.flatMap((e) => e.bullets.flatMap((b) => b.variants ?? []))) {
+			if (v.job) links[v.id] = v.job;
+			delete v.job;
+		}
+		expect(parse(files['experiences.yaml'])).toEqual(register);
+		expect(parse(files['local/variant-jobs.yaml'])).toEqual(links);
+		for (const { slug } of await listJobs()) {
+			const file = slug === 'base' ? 'jobs/base.yaml' : `local/jobs/${slug}.yaml`;
+			expect(parse(files[file]), slug).toEqual(await loadJob(slug));
+		}
 	});
 
 	test('LaTeX text is written verbatim', async () => {
 		const files = await readTree(exportA);
 		expect(files['experiences.yaml']).toContain('reducing median latency by 40\\%');
-		expect(files['jobs/initech-data.yaml']).toContain('Data \\& Platform Engineer');
+		expect(files['local/jobs/initech-data.yaml']).toContain('Data \\& Platform Engineer');
 	});
 });
 
@@ -120,7 +143,7 @@ describe('db:import of an export', () => {
 	test('keeps the selected variant, its job link, custom skills and the analysis', async () => {
 		const exportB = await emptyDataDir('resume-export-b2-');
 		await script('export', urlB, exportB);
-		const job = parse(await readFile(path.join(exportB, 'jobs/initech-data.yaml'), 'utf8')) as Application;
+		const job = parse(await readFile(path.join(exportB, 'local/jobs/initech-data.yaml'), 'utf8')) as Application;
 		expect(job.selection).toEqual(tailored.selection);
 		expect(job.skills).toEqual(tailored.skills);
 		expect(job.analysis).toMatchObject({ status: 'done', summary: 'Good match.' });
@@ -128,9 +151,11 @@ describe('db:import of an export', () => {
 		const dashboard = register.flatMap((e) => e.bullets).find((b) => b.id === 'northwind-dashboard')!;
 		expect(dashboard.variants?.find((v) => v.id === 'northwind-dashboard.v2')).toEqual({
 			id: 'northwind-dashboard.v2',
-			text: 'Built a React dashboard for operations staff',
-			job: 'initech-data'
+			text: 'Built a React dashboard for operations staff'
 		});
+		// The job link survives through the private backup.
+		const links = parse(await readFile(path.join(exportB, 'local/variant-jobs.yaml'), 'utf8')) as Record<string, string>;
+		expect(links['northwind-dashboard.v2']).toBe('initech-data');
 	});
 
 	// Regression: importing into a fresh database keeps each variant's stored Jev check

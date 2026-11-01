@@ -347,7 +347,8 @@ describe('new posting actions and persistence (offline, scratch SQLite)', () => 
 			vi.spyOn(console, 'log').mockImplementation(() => {});
 			await import('../../scripts/export.ts');
 			expect(await readdir(path.join(dataDir, 'jobs'))).not.toContain('stale.yaml');
-			const yaml = parse(await readFile(path.join(dataDir, `jobs/${slug}.yaml`), 'utf8')) as Application;
+			// Job applications are exported to the private (gitignored) local/ backup.
+			const yaml = parse(await readFile(path.join(dataDir, `local/jobs/${slug}.yaml`), 'utf8')) as Application;
 			expect(yaml.postingImport).toEqual(before.get(slug)!.postingImport);
 			expect(yaml.description).toBe(fields.description);
 			await db.job.deleteMany();
