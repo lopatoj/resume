@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { plainResumeText } from '#lib/resume-text.ts';
 	import { page } from '$app/state';
 	import BriefcaseIcon from '@lucide/svelte/icons/briefcase';
 	import FileTextIcon from '@lucide/svelte/icons/file-text';
@@ -10,7 +11,7 @@
 	interface Props {
 		jobs: { slug: string; title: string; company: string }[];
 		experiences: { id: string; kind: 'experience' | 'project'; label: string; detail: string; bullets: number }[];
-		services: { claude: string; jev: boolean };
+		services: { llm: { name: string; model: string }; jev: boolean };
 	}
 
 	let { jobs, experiences, services }: Props = $props();
@@ -18,7 +19,7 @@
 	const path = $derived(page.url.pathname);
 	const roles = $derived(experiences.filter((e) => e.kind === 'experience'));
 	const projects = $derived(experiences.filter((e) => e.kind === 'project'));
-	const plain = (tex: string) => tex.replace(/\\([&%#$_])/g, '$1');
+	const plain = plainResumeText;
 </script>
 
 {#snippet link(href: string, label: string, Icon: typeof FileTextIcon, detail?: string)}
@@ -99,8 +100,8 @@
 
 	<Sidebar.Footer class="border-t group-data-[collapsible=icon]:hidden">
 		<dl class="text-muted-foreground grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 px-2 py-1 text-[0.7rem]">
-			<dt>Claude</dt>
-			<dd class="text-foreground">{services.claude}</dd>
+			<dt>Analysis</dt>
+			<dd class="text-foreground">{services.llm.name} · {services.llm.model}</dd>
 			<dt>Jev</dt>
 			<dd class={services.jev ? 'text-foreground' : ''}>{services.jev ? 'Connected' : 'Not configured'}</dd>
 		</dl>

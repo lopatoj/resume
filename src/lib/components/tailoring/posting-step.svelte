@@ -22,6 +22,7 @@
 	let showIgnored = $state(false);
 	const shown = $derived(lines.filter((l) => showIgnored || l.tag !== 'ignore'));
 	const analysis = $derived(t.job.analysis);
+	const postingImport = $derived(t.job.postingImport);
 
 	let now = $state(Date.now());
 	$effect(() => {
@@ -62,12 +63,65 @@
 				/>
 			</Collapsible.Content>
 		</Collapsible.Root>
+    {#if postingImport}
+      <Collapsible.Root>
+        <Collapsible.Trigger
+          type="button"
+          class="text-muted-foreground hover:text-foreground group flex items-center gap-1 text-xs"
+        >
+          <ChevronRightIcon
+            class="size-3.5 transition-transform group-data-[state=open]:rotate-90"
+          />
+          Original import and source details
+        </Collapsible.Trigger>
+        <Collapsible.Content class="mt-2 grid gap-3 border p-3">
+          <p class="text-muted-foreground text-xs">
+            Read-only source record. Tailoring uses the editable posting text
+            above, not this original paste.
+          </p>
+          <dl class="grid gap-2 text-xs">
+            {#if postingImport.sourceUrl}
+              <div class="grid gap-1">
+                <dt class="text-muted-foreground">
+                  Posting URL (reference only; not fetched)
+                </dt>
+                <dd class="whitespace-pre-wrap break-words">
+                  {postingImport.sourceUrl}
+                </dd>
+              </div>
+            {/if}
+            {#if postingImport.location}
+              <div class="grid gap-1">
+                <dt class="text-muted-foreground">Location at import</dt>
+                <dd class="whitespace-pre-wrap break-words">
+                  {postingImport.location}
+                </dd>
+              </div>
+            {/if}
+            <div class="grid gap-1">
+              <dt class="text-muted-foreground">Imported at</dt>
+              <dd>
+                <time datetime={postingImport.importedAt}
+                  >{postingImport.importedAt}</time
+                >
+              </dd>
+            </div>
+          </dl>
+          <div class="grid gap-1.5">
+            <h3 class="text-xs font-medium">Original pasted text</h3>
+            <pre
+              class="max-h-80 overflow-auto whitespace-pre-wrap break-words font-sans text-sm">{postingImport.originalText ||
+                "No text pasted; details entered manually."}</pre>
+          </div>
+        </Collapsible.Content>
+      </Collapsible.Root>
+    {/if}
 	</section>
 
-	<!-- Claude's analysis -->
+	<!-- AI analysis -->
 	<section class="bg-card grid gap-2 border p-4">
 		<div class="flex items-center gap-2 text-xs font-medium">
-			<SparklesIcon class="size-3.5" /> Claude's analysis
+			<SparklesIcon class="size-3.5" /> AI analysis
 			<span class="text-muted-foreground ml-auto font-normal">
 				{#if analysis?.status === 'running' || t.analysisRunning}
 					<span class="flex items-center gap-1.5"><Spinner class="size-3" /> Reading your register against the posting · {clock(elapsed)}</span>
@@ -88,7 +142,7 @@
 			<p class="text-destructive text-xs">{analysis.error}</p>
 		{:else if !analysis && !t.analysisRunning}
 			<p class="text-muted-foreground text-xs">
-				Starts by itself once the posting has been read. Claude advises on what to bring out and asks about gaps; it never writes your resume.
+				Starts by itself once the posting has been read. AI advises on what to bring out and asks about gaps; it never writes your resume.
 			</p>
 		{:else}
 			<p class="text-muted-foreground text-xs">

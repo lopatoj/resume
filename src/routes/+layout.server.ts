@@ -1,4 +1,4 @@
-import { ANTHROPIC_API_KEY } from '$app/env/private';
+import { llm } from '#lib/server/llm-runtime.ts';
 import { jevEnabled } from '#lib/server/jev-client.ts';
 import { listJobs, loadRegister } from '#lib/server/store.ts';
 import type { LayoutServerLoad } from './$types';
@@ -17,7 +17,7 @@ export const load: LayoutServerLoad = async ({ cookies, depends }) => {
 			detail: e.kind === 'experience' ? e.position : e.duration,
 			bullets: e.bullets.length
 		})),
-		services: { claude: ANTHROPIC_API_KEY ? 'API' : 'Claude Code', jev: jevEnabled() },
+		services: { llm: llm.info, jev: jevEnabled() },
 		sidebarOpen: cookies.get('sidebar_state') !== 'false'
 	};
 };

@@ -1,3 +1,4 @@
+import { llm } from '#lib/server/llm-runtime.ts';
 import { jevEnabled } from '#lib/server/jev-client.ts';
 import { analysisRunning, rebuild } from '#lib/server/jobs.ts';
 import { loadJob, loadProfile, loadRegister } from '#lib/server/store.ts';
@@ -12,6 +13,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		skills: profile.skills,
 		layout: await rebuild(params.slug, job, register),
 		analysisRunning: analysisRunning(params.slug),
+		analysisProvider: llm.info,
 		jevEnabled: jevEnabled()
 	};
 };

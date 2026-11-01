@@ -11,13 +11,13 @@
 	import { Label } from '#lib/components/ui/label/index.js';
 	import * as Table from '#lib/components/ui/table/index.js';
 	import * as ToggleGroup from '#lib/components/ui/toggle-group/index.js';
+	import { plainResumeText } from '#lib/resume-text.ts';
 	import type { Experience } from '#lib/types.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
-	const plain = (tex: string) => tex.replace(/\\([&%#$_])/g, '$1');
-	const name = (e: Experience) => plain(e.kind === 'experience' ? e.company : e.title);
+	const name = (e: Experience) => plainResumeText(e.kind === 'experience' ? e.company : e.title);
 	const variants = (e: Experience) => e.bullets.reduce((n, b) => n + (b.variants?.length ?? 0), 0);
 	const flagged = (e: Experience) =>
 		e.bullets.reduce((n, b) => n + (b.variants ?? []).filter((v) => isFlagged(v.check)).length, 0);
@@ -75,8 +75,8 @@
 					{#each items as e (e.id)}
 						<Table.Row class="cursor-pointer" onclick={() => goto(`/register/${e.id}`)}>
 							<Table.Cell class="font-medium"><a href="/register/{e.id}" class="hover:underline">{name(e) || e.id}</a></Table.Cell>
-							{#if e.kind === 'experience'}<Table.Cell>{plain(e.position)}</Table.Cell>{/if}
-							<Table.Cell class="text-muted-foreground">{e.duration}</Table.Cell>
+							{#if e.kind === 'experience'}<Table.Cell>{plainResumeText(e.position)}</Table.Cell>{/if}
+							<Table.Cell class="text-muted-foreground">{plainResumeText(e.duration)}</Table.Cell>
 							<Table.Cell class="text-right tabular-nums">{e.bullets.length}</Table.Cell>
 							<Table.Cell class="text-right tabular-nums">
 								{variants(e)}

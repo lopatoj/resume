@@ -1,3 +1,4 @@
+import { plainResumeText } from '#lib/resume-text.ts';
 import { execFile } from 'node:child_process';
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -141,7 +142,7 @@ ${alternativeTexts(register)
 const toPt = (s: string) => parseFloat(s);
 
 /** Approximate visible length of LaTeX bullet text. */
-const plainLength = (tex: string) => tex.replace(/\\([&%#$_{}])/g, '$1').replace(/[{}]/g, '').length;
+const plainLength = (tex: string) => plainResumeText(tex).length;
 
 export interface BuildResult {
 	pdf?: Buffer;

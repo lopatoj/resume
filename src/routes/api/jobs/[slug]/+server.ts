@@ -13,6 +13,8 @@ import type { RequestHandler } from './$types';
 export const PUT: RequestHandler = async ({ params, request }) => {
 	const sent = (await request.json()) as Application;
 	const [stored, register, profile] = await Promise.all([loadJob(params.slug).catch(() => undefined), loadRegister(), loadProfile()]);
+	// The original import is server-owned provenance, not editable resume state.
+	sent.postingImport = stored?.postingImport;
 	const postingChanged = !stored || textHash(stored.description) !== textHash(sent.description);
 	// Relevance scores belong to the posting they were computed for.
 	if (postingChanged) delete sent.relevance;

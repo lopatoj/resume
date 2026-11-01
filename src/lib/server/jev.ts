@@ -1,3 +1,4 @@
+import { plainResumeText } from '#lib/resume-text.ts';
 import { choice, noul, score, TypeSafeClient, type ScoreQuestion } from '@typesafe-ai/sdk';
 import type {
 	Application,
@@ -18,7 +19,7 @@ export { selectByRelevance, selectSkills } from '#lib/selection.ts';
 // a rewrite stays faithful to its original. Claude still does the writing.
 
 /** LaTeX bullet text → plain text for Jev. */
-const plain = (tex: string) => tex.replace(/\\([&%#$_])/g, '$1').replace(/[{}]/g, '');
+const plain = plainResumeText;
 
 const BULLET_RUBRIC = [
 	'Unrelated to the posting',

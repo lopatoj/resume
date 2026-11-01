@@ -18,7 +18,7 @@
 	<span class:text-destructive={t.fit.shortLines.length > 0}>Short last lines {t.fit.shortLines.length}</span>
 	{#if musts.length}<span>Must-haves {mustsMet}/{musts.length}</span>{/if}
 	<span>
-		Claude:
+		{t.analysisProvider.name}:
 		{#if t.analysisRunning || analysis?.status === 'running'}analyzing
 		{:else if analysis?.status === 'done'}ready
 		{:else if analysis?.status === 'error'}<span class="text-destructive">failed</span>

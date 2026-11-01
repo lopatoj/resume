@@ -41,3 +41,6 @@ vite.config.ts.timestamp-*
 /data/*.db-wal
 /data/*.db-shm
 /src/lib/server/prisma
+
+# Local conversation exports (reference only, not project source)
+/LaTeX resume tailoring system.md

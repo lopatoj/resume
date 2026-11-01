@@ -71,10 +71,19 @@ export interface SelectedExperience {
 	bullets: SelectedBullet[];
 }
 
+/** Original pasted source, retained separately from the editable posting. */
+export interface PostingImport {
+	originalText: string;
+	sourceUrl?: string;
+	location?: string;
+	importedAt: string;
+}
+
 export interface Application {
 	title: string;
 	company: string;
 	description: string;
+	postingImport?: PostingImport;
 	selection: SelectedExperience[];
 	/** Skills to list; omitted means every skill in the profile. */
 	skills?: SkillGroup[];

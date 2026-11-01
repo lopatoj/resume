@@ -30,7 +30,8 @@ export async function askCli<T extends z.ZodType>(
 	prompt: string,
 	schema: T,
 	onActivity?: (activity: CliActivity) => void,
-	signal?: AbortSignal
+	signal?: AbortSignal,
+	model = 'opus'
 ): Promise<z.infer<T>> {
 	// The CLI validates the schema with a draft-07 Ajv and silently drops structured
 	// output if that throws, which Zod's draft-2020-12 `$schema` declaration triggers.
@@ -42,7 +43,7 @@ export async function askCli<T extends z.ZodType>(
 		'--include-partial-messages',
 		'--json-schema', JSON.stringify(jsonSchema),
 		'--system-prompt', system,
-		'--model', 'opus',
+		'--model', model,
 		'--effort', 'high',
 		'--tools', '',
 		'--strict-mcp-config',
@@ -126,7 +127,10 @@ export class AbortError extends Error {
 
 function run(cmd: string, args: string[], input: string, cwd: string, onLine: (line: string) => void, signal?: AbortSignal) {
 	return new Promise<{ code: number | null; stderr: string; tail: string; timedOut: boolean }>((resolve, reject) => {
-		const child = spawn(cmd, args, { cwd, stdio: ['pipe', 'pipe', 'pipe'] });
+		// CLI mode uses its own login, not exported API credentials or a cloud backend.
+		const env = { ...process.env };
+		for (const key of ['ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'CLAUDE_CODE_USE_BEDROCK', 'CLAUDE_CODE_USE_VERTEX', 'CLAUDE_CODE_USE_FOUNDRY']) delete env[key];
+		const child = spawn(cmd, args, { cwd, env, stdio: ['pipe', 'pipe', 'pipe'] });
 		let pending = '';
 		let tail = '';
 		let stderr = '';
@@ -158,7 +162,7 @@ function run(cmd: string, args: string[], input: string, cwd: string, onLine: (l
 			clearTimeout(timer);
 			reject(
 				e.code === 'ENOENT'
-					? new Error('Claude Code CLI (`claude`) not found on PATH, and ANTHROPIC_API_KEY is not set')
+					? new Error('Claude Code CLI (`claude`) not found on PATH. Install and log in to Claude Code, or select another LLM_PROVIDER.')
 					: e
 			);
 		});

@@ -1,3 +1,4 @@
+import { plainResumeText } from '#lib/resume-text.ts';
 import { isFlagged } from './checks.ts';
 import { COVERED, coverageOf } from './guidance.ts';
 import { textHash } from './hash.ts';
@@ -31,7 +32,7 @@ export const SHORT_LAST_LINE = 0.3;
  */
 export const SECTION_OVERHEAD_PT = { experience: 19.5, project: 19 } as const;
 
-const plain = (tex: string) => tex.replace(/\\([&%#$_])/g, '$1');
+const plain = plainResumeText;
 
 // ---- selection edits ----
 

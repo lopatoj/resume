@@ -161,10 +161,10 @@
 		{/if}
 	</section>
 
-	<!-- Claude's notes -->
+	<!-- AI notes -->
 	{#if notes.length}
 		<section class="grid gap-2">
-			<h2 class="text-muted-foreground text-[0.7rem] font-medium tracking-[0.15em] uppercase">Claude's notes on your bullets</h2>
+			<h2 class="text-muted-foreground text-[0.7rem] font-medium tracking-[0.15em] uppercase">AI notes on your bullets</h2>
 			<p class="text-muted-foreground text-xs">Advice only. Rewording happens in the Register, in your own words.</p>
 			{#each notes as note (note.bulletId)}
 				{@const exp = t.experienceOf(note.bulletId)}

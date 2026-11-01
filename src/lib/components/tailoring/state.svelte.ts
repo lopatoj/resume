@@ -1,3 +1,4 @@
+import { plainResumeText } from '#lib/resume-text.ts';
 import { invalidate } from '$app/navigation';
 import { getContext, setContext } from 'svelte';
 import { toast } from 'svelte-sonner';
@@ -16,6 +17,7 @@ export class Tailoring {
 	readonly slug: string;
 	readonly skills: SkillGroup[] = [];
 	readonly jevEnabled: boolean;
+	readonly analysisProvider: { name: string; model: string };
 
 	job = $state<Application>() as Application;
 	register = $state<Experience[]>([]);
@@ -43,10 +45,12 @@ export class Tailoring {
 		skills: SkillGroup[];
 		jevEnabled: boolean;
 		analysisRunning: boolean;
+		analysisProvider: { name: string; model: string };
 	}) {
 		this.slug = data.slug;
 		this.skills = data.skills;
 		this.jevEnabled = data.jevEnabled;
+		this.analysisProvider = data.analysisProvider;
 		this.job = structuredClone(data.job);
 		this.register = structuredClone(data.register);
 		this.layout = data.layout;
@@ -122,7 +126,7 @@ export class Tailoring {
 		return this.save();
 	}
 
-	/** Brings requirements, relevance and coverage up to date (and starts Claude's analysis if needed). */
+	/** Brings requirements, relevance and coverage up to date (and starts AI analysis if needed). */
 	async refreshGuidance() {
 		await this.flush();
 		const body = await this.#request<{ job: Application }>('Jev is reading the posting', `/api/jobs/${this.slug}/guidance`, {
@@ -159,7 +163,7 @@ export class Tailoring {
 	}
 
 	async rerunAnalysis() {
-		const body = await this.#request<{ analysis: Analysis | null; running: boolean }>('Starting Claude', `/api/jobs/${this.slug}/analysis`, {
+		const body = await this.#request<{ analysis: Analysis | null; running: boolean }>(`Starting ${this.analysisProvider.name}`, `/api/jobs/${this.slug}/analysis`, {
 			method: 'POST'
 		});
 		if (!body) return;
@@ -167,7 +171,7 @@ export class Tailoring {
 		this.#poll();
 	}
 
-	/** Checks on Claude's background analysis every few seconds until it finishes. */
+	/** Checks on background AI analysis every few seconds until it finishes. */
 	#poll() {
 		this.analysisRunning = true;
 		if (this.#pollTimer) return;
@@ -180,8 +184,8 @@ export class Tailoring {
 				clearInterval(this.#pollTimer);
 				this.#pollTimer = undefined;
 				this.analysisRunning = false;
-				if (analysis?.status === 'done') toast.success("Claude's analysis is ready");
-				if (analysis?.status === 'error') toast.error(`Claude's analysis failed: ${analysis.error}`);
+				if (analysis?.status === 'done') toast.success('AI analysis is ready');
+				if (analysis?.status === 'error') toast.error(`AI analysis failed: ${analysis.error}`);
 			}
 		}, 4000);
 	}
@@ -208,4 +212,4 @@ export const setTailoring = (state: Tailoring) => setContext(KEY, state);
 export const useTailoring = () => getContext<Tailoring>(KEY);
 
 /** LaTeX → readable text for display. */
-export const display = (tex: string) => tex.replace(/\\([&%#$_])/g, '$1').replace(/~\$\\diamond\$~/g, ' ◇ ');
+export const display = plainResumeText;

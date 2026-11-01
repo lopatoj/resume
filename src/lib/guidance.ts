@@ -1,10 +1,11 @@
+import { plainResumeText } from '#lib/resume-text.ts';
 import { textHash } from './hash.ts';
 import type { Application, Coverage, Experience, Requirement, SkillGroup } from './types.ts';
 
 // Shared by server and client: which texts are on the page, and how well each
 // requirement is covered by them.
 
-const plain = (tex: string) => tex.replace(/\\([&%#$_])/g, '$1');
+const plain = plainResumeText;
 
 /** The skills section as one text, so requirements like "familiarity with SQL" can be covered by it. */
 export const skillsText = (skills: SkillGroup[]) =>

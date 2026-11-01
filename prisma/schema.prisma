@@ -104,6 +104,7 @@ model Job {
   title        String
   company      String
   description  String
+  postingImport Json?
   rationale    String?
   // Jev's relevance scores from the latest tailoring (see Relevance in src/lib/types.ts).
   relevance    Json?

@@ -33,9 +33,11 @@
 	const t = setTailoring(new Tailoring(data));
 	onDestroy(() => t.destroy());
 
-	// Jobs created before guided tailoring: read the posting once, on first visit.
+	// Older jobs may have requirements already, but no background analysis yet.
 	onMount(() => {
-		if (t.jevEnabled && t.job.description.trim() && !t.job.requirements) t.refreshGuidance();
+		if (t.job.description.trim() && (!t.job.requirements || (!t.job.analysis && !t.analysisRunning))) {
+			t.refreshGuidance();
+		}
 	});
 
 	let step = $state(t.job.requirements ? 'content' : 'posting');
@@ -68,7 +70,7 @@
 	}
 
 	function onkeydown(e: KeyboardEvent) {
-		if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) {
+		if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !(e.target instanceof HTMLElement && (e.target.isContentEditable || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement))) {
 			e.preventDefault();
 			t.undo();
 		}

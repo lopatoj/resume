@@ -1,7 +1,7 @@
 import { pageSources } from '#lib/guidance.ts';
 import { textHash } from '#lib/hash.ts';
 import { splitPosting } from '#lib/posting.ts';
-import { analyzePosting } from './claude.ts';
+import { analyzePosting } from './analysis.ts';
 import { AbortError } from './claude-cli.ts';
 import { classifyPosting, coverage, rankForJob, selectByRelevance, selectSkills } from './jev.ts';
 import { jevEnabled, withJev } from './jev-client.ts';
@@ -93,14 +93,14 @@ export async function jevPicks(job: Application, register: Experience[], profile
 	};
 }
 
-// Claude's background analyses, per job. They never lock the job: the user keeps working
+// Background model analyses, per job. They never lock the job: the user keeps working
 // and the result lands in its own field when it's ready. Kept on globalThis so a dev-server
 // module reload doesn't lose track of a run in progress.
 const shared = globalThis as typeof globalThis & { __resumeAnalyses?: Map<string, { hash: string; abort: AbortController }> };
 const analyses = (shared.__resumeAnalyses ??= new Map());
 
 /**
- * Starts Claude's analysis of the job's posting in the background, unless one for the same
+ * Starts the model's analysis of the job's posting in the background, unless one for the same
  * posting is already running or done (pass `force` to redo it). A run for an older version
  * of the posting is cancelled.
  */

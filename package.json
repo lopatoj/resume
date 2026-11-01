@@ -14,6 +14,11 @@
 		"db:import": "node scripts/import.ts",
 		"db:export": "node scripts/export.ts",
 		"db:studio": "prisma studio",
+		"text:test": "node --test scripts/test-resume-text.ts",
+		"posting:actions:test": "node --test scripts/test-posting-actions.ts",
+		"posting:test": "node --test scripts/test-posting-import.ts",
+		"llm:test": "node --test scripts/test-llm.ts",
+		"llm:check": "node --env-file-if-exists=.env scripts/check-llm.ts",
 		"claude:check": "node scripts/check-claude.ts",
 		"jev:compare": "node --env-file-if-exists=.env scripts/compare-jev.ts",
 		"jev:check-variants": "node --env-file-if-exists=.env scripts/check-variants.ts",
@@ -50,11 +55,21 @@
 		"#lib/*": "./src/lib/*"
 	},
 	"dependencies": {
+		"@ai-sdk/google": "^4.0.109",
 		"@anthropic-ai/sdk": "^1.3.0",
 		"@libsql/client": "^0.18.0",
 		"@prisma/adapter-libsql": "7.10.1",
 		"@prisma/client": "7.10.1",
+		"@tiptap/core": "^3.32.2",
+		"@tiptap/extension-bold": "^3.32.2",
+		"@tiptap/extension-document": "^3.32.2",
+		"@tiptap/extension-italic": "^3.32.2",
+		"@tiptap/extension-link": "^3.32.2",
+		"@tiptap/extension-paragraph": "^3.32.2",
+		"@tiptap/extension-text": "^3.32.2",
+		"@tiptap/extensions": "^3.32.2",
 		"@typesafe-ai/sdk": "0.7.0",
+		"ai": "^7.0.159",
 		"yaml": "^2.9.1",
 		"zod": "^4.6.7"
 	}

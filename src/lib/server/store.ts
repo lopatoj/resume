@@ -6,6 +6,7 @@ import type {
 	Bullet,
 	Experience,
 	Profile,
+	PostingImport,
 	Analysis,
 	Coverage,
 	Guide,
@@ -237,6 +238,18 @@ export async function listJobs(): Promise<{ slug: string; title: string; company
 	return db.job.findMany({ select: { slug: true, title: true, company: true }, orderBy: { createdAt: 'asc' } });
 }
 
+/** Only the fields needed for local posting duplicate checks. */
+export async function listPostingCandidates() {
+	const jobs = await db.job.findMany({
+		where: { slug: { not: 'base' } },
+		select: { slug: true, title: true, company: true, description: true, postingImport: true }
+	});
+	return jobs.map(({ postingImport, ...job }) => ({
+		...job,
+		sourceUrl: (postingImport as unknown as PostingImport | null)?.sourceUrl
+	}));
+}
+
 export interface JobSummary {
 	slug: string;
 	title: string;
@@ -307,6 +320,7 @@ export async function loadJob(slug: string): Promise<Application> {
 		title: job.title,
 		company: job.company,
 		description: job.description,
+		...(job.postingImport ? { postingImport: job.postingImport as unknown as PostingImport } : {}),
 		selection,
 		...(skills ? { skills } : {}),
 		...(job.rationale ? { rationale: job.rationale } : {}),
@@ -326,6 +340,7 @@ export async function saveJob(slug: string, job: Application) {
 			title: job.title,
 			company: job.company,
 			description: job.description,
+			postingImport: json(job.postingImport),
 			rationale: job.rationale ?? null,
 			relevance: json(job.relevance),
 			requirements: json(job.requirements),

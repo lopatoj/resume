@@ -26,9 +26,10 @@ Local SvelteKit app that tailors a LaTeX resume to job postings. See README.md f
 
 ## AI integrations
 
-- Claude runs through the Anthropic API when `ANTHROPIC_API_KEY` is set, otherwise the local Claude Code CLI (`src/lib/server/claude-cli.ts`, `claude -p` with stream-json). The CLI refuses to start inside a Claude Code session, so don't try to run it from here; test with a stand-in `claude` on `PATH`.
+- Analysis uses the shared `generateStructured()` interface in `src/lib/server/llm.ts`, bound to `$app/env/private` in `llm-runtime.ts`; prompts and safeguards live in `analysis.ts`. `LLM_PROVIDER` selects `google` (Gemini via AI SDK Core), `anthropic` (API), or `claude-cli`. `LLM_MODEL` overrides the provider's default. No automatic cross-provider fallback. Google uses `GOOGLE_GENERATIVE_AI_API_KEY`; free-tier content may be used to improve Google products. Never make live calls just to test: `pnpm llm:test` is offline; `pnpm llm:check` is explicitly live.
+- Claude Code (`src/lib/server/claude-cli.ts`, `claude -p` with stream-json) uses its own login without inherited API credentials/cloud backend selectors. It refuses to start inside a Claude Code session, so don't try to run it from here; test with a stand-in `claude` on `PATH`.
 - Jev (TypeSafe, `TYPESAFE_API_KEY`) scores relevance and checks rewrites (`src/lib/server/jev.ts`). Live calls cost the user's credit; keep them small. `pnpm jev:eval` is the rewrite-check regression test.
-- Never send profile contact details or education to either service.
+- Never send profile contact details or education to any AI provider or Jev.
 
 ## Checking work
 
