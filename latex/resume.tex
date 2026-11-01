@@ -1,0 +1,137 @@
+\documentclass{resume}
+
+\setlength{\tabcolsep}{0pt}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1em, labelsep=0.4em} % tighter bullet indent
+
+\begin{document}
+
+% --------- Contact Information -----------
+\introduction[
+	fullname={Justin Lopato},
+	email={justin@lopa.to},
+	phone={(512) 661-8595},
+	linkedin={lopatoj},
+	github={lopatoj},
+	website={lopa.to}
+]
+
+% --------- Education ---------
+\begin{educationSection}{Education}
+	\educationItem[
+		university={Rice University, Houston, TX},
+		college={George R. Brown School of Engineering and Computing},
+		graduation={May 2027},
+		gpa={3.76},
+		program={Bachelor of Science in Computer Science},
+	]
+	% TODO: uncomment and list 5-7 courses you have actually taken (algorithms, systems, OS, databases, distributed systems, ML...)
+	% \textbf{Coursework:} Algorithms, Computer Systems, Operating Systems, Data Structures, ...
+\end{educationSection}
+\vspace{-1.5em}
+
+% --------- Experience ---------
+\begin{experienceSection}{Experience}
+	\experienceItem[
+		company={Noblis, Inc.},
+		location={Reston, VA},
+		position={Autonomous Systems Engineering Intern},
+		duration={June 2026 – August 2026}
+	]
+	\begin{itemize}
+		\vspace{-0.2em}
+		\itemsep -6pt
+		\item Architected real-time firmware for a 12-motor quadruped walking robot in C++ (Zephyr RTOS) allowing integration with ROS 2, the industry-standard robotics framework, at a 300 Hz control loop
+		\item Engineered a safety-critical actuator control layer that autonomously manages electrical disconnects, preventing catastrophic failures by instantly detecting offline motors and executing coordinated joint deceleration
+		\item Modeled the robot in URDF and Gazebo to validate control code, identifying unstable gait before hardware deployment
+		\item Extended an open-source navigation framework with a C++ cost model for movable obstacles, shortening planned routes by 20\% over 10 trials; drafted a paper evaluating the approach
+	\end{itemize}
+	\experienceItem[
+		company={Kavraki Computational Robotics Lab},
+		location={Houston, TX},
+		position={Research Assistant},
+		duration={August 2025 – May 2026}
+	]
+	\begin{itemize}
+		\vspace{-0.2em}
+		\itemsep -6pt
+		\item Designed a hardware abstraction layer placing MuJoCo simulation and two physical UR5 arms behind a single API, enabling 4 researchers to run identical motion-planning code in both environments
+		\item Developed a path planner for a mobile manipulator robot that ensured strict adherence to built-in motion limits, eliminating the need for custom controller maintenance and leveraging the stock hardware stack
+		\item Reduced motion planning debugging cycles from hours to minutes by building interactive visual observability and trajectory-inspection tools for lab researchers
+	\end{itemize}
+	\experienceItem[
+		company={Rice University},
+		location={Houston, TX},
+		position={Computer Systems Teaching Assistant},
+		duration={August 2025 – December 2025}
+	]
+	\begin{itemize}
+		\vspace{-0.2em}
+		\itemsep -6pt
+		\item Mentored 15+ students on foundational concepts of x86 assembly, bit-level data and the memory hierarchy; provided weekly labs and office hours
+		\item Provided actionable feedback on C programming and graded exams; coached debugging with GDB and Valgrind
+	\end{itemize}
+	\experienceItem[
+		company={Rice ELITE Tech Camp},
+		location={Houston, TX},
+		position={Robotics Programming Instructor},
+		duration={May 2025 – July 2025}
+	]
+	\begin{itemize}
+		\vspace{-0.2em}
+		\itemsep -6pt
+		\item Instructed weekly classes of 30+ high school students on real world engineering applications of Arduino C++ and Python
+		\item Authored the course C++ curriculum, expanding content from basic programming to fundamental embedded concepts
+		\item Implemented a stepper-motor library with a beginner-friendly API, enabling students with no prior experience to use precise control in their final projects
+	\end{itemize}
+\end{experienceSection}
+
+% --------- Projects ---------
+\begin{experienceSection}{Projects \& Leadership}
+	\projectItem[
+		title={SLB Emissions Reduction Platform (Capstone Senior Design): DevOps Lead},
+		duration={August 2026 – December 2026}
+	]
+	\begin{itemize}
+		\vspace{-0.5em}
+		\itemsep -6pt {}
+		\item Spearheaded DevOps and infrastructure strategy for a 20-person team building Next.js/C\#/Azure platform to automate greenhouse gas reporting and prioritize abatement initiatives by net present value for SLB oil-field services corporation
+		\item Designed robust CI/CD architecture executing parallel validation gates (linting, integration testing, and build), eliminating manual deployment overhead and standardizing continuous delivery to staging and production environments
+		\item Decoupled frontend and backend development workflows by defining OpenAPI contracts for REST and async SignalR endpoints, validated in CI to eliminate integration drift
+		\item Accelerated delivery velocity for bi-weekly SLB client demonstrations by orchestrating weekly Agile sprints and engineering clear communication pipelines between management and developers
+	\end{itemize}
+	\projectItem[
+		title={Rice Robotics Club: R\&D Software Lead},
+		duration={February 2024 – Present}
+	]
+	\begin{itemize}
+		\vspace{-0.5em}
+		\itemsep -6pt {}
+		\item Championed organizational growth strategies that expanded engineering membership by 4x through structured onboarding meetings and cross-functional alignment across software, electrical, and mechanical teams
+		\item Engineered a modular reinforcement learning pipeline to quickly train and evaluate control policies for R\&D projects
+		\item Enhanced robotic prototype validation by designing an Qt graphical interface that eliminated software barriers for hardware testing and enforced safe operational limits during leg experimentation
+	\end{itemize}
+	% \projectItem[
+	%     title={Social Accountability Web App using React, Express, MongoDB, WebSockets},
+	%     duration={September 2024}
+	% ]
+	% \begin{itemize}
+	%     \vspace{-0.5em}
+	%     \itemsep -6pt {}
+	%     \item Built a full-stack app pairing students as accountability partners by interest using vector similarity, for RiceHacks 2024
+	%     \item Implemented real-time chat between matched users over WebSockets; earned 70\% match satisfaction from participants
+	% \end{itemize}
+\end{experienceSection}
+
+% --------- Skills ---------
+\sectionTitle{Technical Skills}
+\textbf{Languages:} Python, C++, C\#, TypeScript/JavaScript, C, Java, Go, JSON/YAML \\
+\textbf{Web \& Cloud:} React, Next.js, Node.js, Express, Azure (Functions, SQL, Blob Storage, SignalR), OpenAPI, MongoDB \\
+\textbf{DevOps \& Tools:} Azure Pipelines, CI/CD, Docker, GoogleTest, Vitest, MSTest, Git, Linux, GDB, Valgrind, \\
+\textbf{Robotics \& Embedded:} ROS 2, Xacro/URDF, MoveIt, Zephyr RTOS, Protobuf/nanopb, MuJoCo, Gazebo, Genesis
+
+% --------- Awards ---------
+\sectionTitle{Awards}
+Hispanic Scholarship Fund Scholar (2023–2026) ~$\diamond$~ President's Honor Roll (2023, 2024) ~$\diamond$~ Eagle Scout (2022)
+
+\end{document}

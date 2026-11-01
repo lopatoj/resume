@@ -1,0 +1,41 @@
+# The general-purpose resume. New jobs start from this selection.
+title: General
+company: ""
+description: ""
+selection:
+  - experience: noblis
+    bullets:
+      - bullet: noblis-firmware
+      - bullet: noblis-safety
+      - bullet: noblis-sim
+      - bullet: noblis-nav
+  - experience: kavraki
+    bullets:
+      - bullet: kavraki-hal
+      - bullet: kavraki-planner
+      - bullet: kavraki-tools
+  - experience: rice-ta
+    bullets:
+      - bullet: ta-mentor
+        variant: ta-mentor.v1
+      - bullet: ta-feedback
+  - experience: elite-camp
+    bullets:
+      - bullet: camp-instruct
+      - bullet: camp-curriculum
+      - bullet: camp-stepper
+        variant: camp-stepper.v1
+  - experience: slb-capstone
+    bullets:
+      - bullet: slb-devops
+      - bullet: slb-cicd
+      - bullet: slb-openapi
+      - bullet: slb-agile
+  - experience: rice-robotics
+    bullets:
+      - bullet: club-growth
+      - bullet: club-rl
+      - bullet: club-qt
+  - experience: ricehacks
+    bullets:
+      - bullet: hacks-matching

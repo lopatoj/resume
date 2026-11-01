@@ -1,0 +1,43 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# LaTeX build output (scoped: src/routes/jobs/[slug]/resume.pdf is a route, not output)
+/*.aux
+/*.log
+/*.out
+/*.pdf
+/latex/*.aux
+/latex/*.log
+/latex/*.out
+/latex/*.pdf
+/latex/*.meas
+# Built and preview PDFs
+/.cache
+
+# Database (data/*.yaml is the committed snapshot; see pnpm db:export)
+/data/*.db
+/data/*.db-journal
+/data/*.db-wal
+/data/*.db-shm
+/src/lib/server/prisma

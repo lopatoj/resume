@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Job" ADD COLUMN "analysis" JSONB;
+ALTER TABLE "Job" ADD COLUMN "coverage" JSONB;
+ALTER TABLE "Job" ADD COLUMN "guide" JSONB;
+ALTER TABLE "Job" ADD COLUMN "requirements" JSONB;

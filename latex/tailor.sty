@@ -1,0 +1,55 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tailor}[2026/11/01 Bullet layout measurement for resume tailoring]
+
+% Records layout measurements to \jobname.meas, one per line:
+%   BULLET <id> <lines> <last line natural width> <line width>
+%       for each \rbullet{id}{text}, which typesets a normal \item and measures it;
+%   ALT <key> <lines> <last line natural width> <line width>
+%       for each \rmeasure{key}{text}, which measures text without printing it
+%       (alternatives such as unused bullets and variants);
+%   METRICS <\baselineskip> <\itemsep> <\parsep>
+%       once, from the first bullet list, to convert space into lines;
+%   PAGE <page number> <\pagetotal> <\pagegoal>
+%       at the end of the document: space used on the last page.
+
+\newwrite\tailor@meas
+\newbox\tailor@para
+\newbox\tailor@last
+\newif\iftailor@metrics
+\immediate\openout\tailor@meas=\jobname.meas
+
+\newcommand\rbullet[2]{%
+    \iftailor@metrics\else
+        \global\tailor@metricstrue
+        \immediate\write\tailor@meas{METRICS \the\baselineskip\space\the\itemsep\space\the\parsep}%
+    \fi
+    \item #2\tailor@measure{BULLET}{#1}{#2}}
+
+\newcommand\rmeasure[2]{\tailor@measure{ALT}{#1}{#2}}
+
+% Alternatives are measured in a list that is never shipped out, at the same width
+% as the resume's bullet lists. Use \begin{tailoralternatives} ... \rmeasure ... \end{...}.
+\newenvironment{tailoralternatives}{%
+    \setbox0\vbox\bgroup\hsize\textwidth\begin{itemize}\item\relax
+}{%
+    \end{itemize}\egroup
+}
+
+\newcommand\tailor@measure[3]{%
+    \begingroup
+    \setbox\tailor@para\vbox{%
+        \hsize\linewidth \parindent0pt \leftskip0pt \rightskip0pt
+        \parfillskip0pt plus 1fil
+        \leavevmode #3\par
+        \xdef\tailor@lines{\the\prevgraf}%
+        \unskip\unpenalty\global\setbox\tailor@last\lastbox
+    }%
+    \setbox\tailor@last\hbox{\unhbox\tailor@last}%
+    \immediate\write\tailor@meas{#1 #2 \tailor@lines\space\the\wd\tailor@last\space\the\linewidth}%
+    \endgroup
+}
+
+\AtEndDocument{%
+    \par
+    \immediate\write\tailor@meas{PAGE \thepage\space\the\pagetotal\space\the\pagegoal}%
+}

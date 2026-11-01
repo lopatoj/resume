@@ -1,0 +1,24 @@
+# Contact, education and awards are rendered as-is and never sent to Claude.
+# All text fields are LaTeX (escape & % # $ _).
+name: Justin Lopato
+email: justin@lopa.to
+phone: (512) 661-8595
+linkedin: lopatoj
+github: lopatoj
+website: lopa.to
+education:
+  university: Rice University, Houston, TX
+  college: George R. Brown School of Engineering and Computing
+  graduation: May 2027
+  gpa: "3.76"
+  program: Bachelor of Science in Computer Science
+skills:
+  - category: Languages
+    items: [ Python, C++, C\#, TypeScript/JavaScript, C, Java, Go, JSON/YAML ]
+  - category: Web \& Cloud
+    items: [ React, Next.js, Node.js, Express, "Azure (Functions, SQL, Blob Storage, SignalR)", OpenAPI, MongoDB ]
+  - category: DevOps \& Tools
+    items: [ Azure Pipelines, CI/CD, Docker, GoogleTest, Vitest, MSTest, Git, Linux, GDB, Valgrind ]
+  - category: Robotics \& Embedded
+    items: [ ROS 2, Xacro/URDF, MoveIt, Zephyr RTOS, Protobuf/nanopb, MuJoCo, Gazebo, Genesis ]
+awards: Hispanic Scholarship Fund Scholar (2023–2026) ~$\diamond$~ President's Honor Roll (2023, 2024) ~$\diamond$~ Eagle Scout (2022)

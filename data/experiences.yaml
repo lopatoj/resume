@@ -1,0 +1,173 @@
+# The register: every experience and every bullet you've written.
+# Bullet text is LaTeX. Variants are alternate phrasings (written by you or by
+# Claude while tailoring); a job's selection picks a bullet and optionally a variant.
+# kind: experience | project
+- id: noblis
+  duration: June 2026 – August 2026
+  bullets:
+    - id: noblis-firmware
+      text: Architected real-time firmware for a 12-motor quadruped walking robot in C++ (Zephyr RTOS) allowing integration with ROS 2, the industry-standard robotics framework, at a 300 Hz control loop
+      tags: [ c++, embedded, real-time, robotics, ros2, rtos ]
+    - id: noblis-safety
+      text: Engineered a safety-critical actuator control layer that autonomously manages electrical disconnects, preventing catastrophic failures by instantly detecting offline motors and executing coordinated joint deceleration
+      tags: [ controls, embedded, robotics, safety-critical ]
+    - id: noblis-sim
+      text: Modeled the robot in URDF and Gazebo to validate control code, identifying unstable gait before hardware deployment
+      tags: [ gazebo, robotics, simulation, testing, urdf ]
+    - id: noblis-nav
+      text: Extended an open-source navigation framework with a C++ cost model for movable obstacles, shortening planned routes by 20\% over 10 trials; drafted a paper evaluating the approach
+      tags: [ c++, navigation, planning, research, robotics ]
+  kind: experience
+  company: Noblis, Inc.
+  location: Reston, VA
+  position: Autonomous Systems Engineering Intern
+- id: kavraki
+  duration: August 2025 – May 2026
+  bullets:
+    - id: kavraki-hal
+      text: Designed a hardware abstraction layer placing MuJoCo simulation and two physical UR5 arms behind a single API, enabling 4 researchers to run identical motion-planning code in both environments
+      tags: [ abstraction, api-design, mujoco, robotics, simulation ]
+      variants:
+        - id: kavraki-hal.v1
+          text: Designed an abstraction layer placing simulation and hardware behind a single API, enabling 4 researchers to run identical code across both environments
+          check:
+            verdict: faithful
+            confidence: 0.89
+        - id: kavraki-hal.v2
+          text: Designed a hardware abstraction layer placing MuJoCo simulation and two physical UR5 arms behind a single API, enabling 4 researchers to run identical motion-planning code across both environments
+          check:
+            verdict: faithful
+            confidence: 0.99
+    - id: kavraki-planner
+      text: Developed a path planner for a mobile manipulator robot that ensured strict adherence to built-in motion limits, eliminating the need for custom controller maintenance and leveraging the stock hardware stack
+      tags: [ controls, motion-planning, robotics ]
+    - id: kavraki-tools
+      text: Reduced motion planning debugging cycles from hours to minutes by building interactive visual observability and trajectory-inspection tools for lab researchers
+      tags: [ debugging, developer-experience, tooling, visualization ]
+      variants:
+        - id: kavraki-tools.v1
+          text: Reduced debugging cycles from hours to minutes by building interactive observability and inspection tools for lab researchers
+          check:
+            verdict: faithful
+            confidence: 0.87
+        - id: kavraki-tools.v2
+          text: Reduced debugging cycles from hours to minutes by building interactive observability and inspection tools
+          check:
+            verdict: faithful
+            confidence: 0.96
+  kind: experience
+  company: Kavraki Computational Robotics Lab
+  location: Houston, TX
+  position: Research Assistant
+- id: rice-ta
+  duration: August 2025 – December 2025
+  bullets:
+    - id: ta-mentor
+      text: Mentored 15+ students on foundational concepts of x86 assembly, bit-level data and the memory hierarchy; provided weekly labs and office hours
+      tags: [ c, mentoring, systems, teaching, x86 ]
+      variants:
+        - id: ta-mentor.v1
+          text: Mentored 15+ students on x86 assembly, bit-level data, and memory hierarchy via weekly labs and office hours
+          check:
+            verdict: faithful
+            confidence: 0.91
+    - id: ta-feedback
+      text: Provided actionable feedback on C programming and graded exams; coached debugging with GDB and Valgrind
+      tags: [ c, debugging, gdb, teaching, valgrind ]
+  kind: experience
+  company: Rice University
+  location: Houston, TX
+  position: Computer Systems Teaching Assistant
+- id: elite-camp
+  duration: May 2025 – July 2025
+  bullets:
+    - id: camp-instruct
+      text: Instructed weekly classes of 30+ high school students on real world engineering applications of Arduino C++ and Python
+      tags: [ arduino, c++, python, teaching ]
+    - id: camp-curriculum
+      text: Authored the course C++ curriculum, expanding content from basic programming to fundamental embedded concepts
+      tags: [ c++, curriculum, embedded, teaching ]
+    - id: camp-stepper
+      text: Implemented a stepper-motor library with a beginner-friendly API, enabling students with no prior experience to use precise control in their final projects
+      tags: [ api-design, c++, embedded, library ]
+      variants:
+        - id: camp-stepper.v1
+          text: Implemented a beginner-friendly stepper-motor library enabling students to apply precise control in final projects
+          check:
+            verdict: faithful
+            confidence: 0.89
+  kind: experience
+  company: Rice ELITE Tech Camp
+  location: Houston, TX
+  position: Robotics Programming Instructor
+- id: slb-capstone
+  duration: August 2026 – December 2026
+  bullets:
+    - id: slb-devops
+      text: Spearheaded DevOps and infrastructure strategy for a 20-person team building Next.js/C\#/Azure platform to automate greenhouse gas reporting and prioritize abatement initiatives by net present value for SLB oil-field services corporation
+      tags: [ azure, c#, devops, infrastructure, leadership, next.js ]
+      variants:
+        - id: slb-devops.v1
+          text: Spearheaded DevOps and infrastructure strategy for a 20-person team building a Next.js/C\#/Azure web platform to automate greenhouse gas reporting for SLB oil-field services corporation
+          check:
+            verdict: faithful
+            confidence: 0.89
+    - id: slb-cicd
+      text: Designed robust CI/CD architecture executing parallel validation gates (linting, integration testing, and build), eliminating manual deployment overhead and standardizing continuous delivery to staging and production environments
+      tags: [ automation, ci/cd, devops, testing ]
+      variants:
+        - id: slb-cicd.v1
+          text: Designed reliable CI/CD architecture executing parallel validation gates (linting, automated testing, and build), eliminating manual deployment overhead and standardizing continuous delivery to staging and production environments
+          check:
+            verdict: faithful
+            confidence: 0.51
+    - id: slb-openapi
+      text: Decoupled frontend and backend development workflows by defining OpenAPI contracts for REST and async SignalR endpoints, validated in CI to eliminate integration drift
+      tags: [ api-design, ci/cd, openapi, rest, signalr ]
+    - id: slb-agile
+      text: Accelerated delivery velocity for bi-weekly SLB client demonstrations by orchestrating weekly Agile sprints and engineering clear communication pipelines between management and developers
+      tags: [ agile, communication, leadership, project-management ]
+  kind: project
+  title: "SLB Emissions Reduction Platform (Capstone Senior Design): DevOps Lead"
+- id: rice-robotics
+  duration: February 2024 – Present
+  bullets:
+    - id: club-growth
+      text: Championed organizational growth strategies that expanded engineering membership by 4x through structured onboarding meetings and cross-functional alignment across software, electrical, and mechanical teams
+      tags: [ cross-functional, leadership, mentoring ]
+    - id: club-rl
+      text: Engineered a modular reinforcement learning pipeline to quickly train and evaluate control policies for R\&D projects
+      tags: [ machine-learning, python, reinforcement-learning, robotics ]
+    - id: club-qt
+      text: Enhanced robotic prototype validation by designing an Qt graphical interface that eliminated software barriers for hardware testing and enforced safe operational limits during leg experimentation
+      tags: [ gui, hardware-testing, qt, robotics, safety ]
+      variants:
+        - id: club-qt.v1
+          text: Designed a Qt graphical interface that eliminated software barriers for hardware testing and enforced safe operational limits during prototype validation
+          check:
+            verdict: faithful
+            confidence: 0.84
+        - id: club-qt.v2
+          text: Enhanced robotic prototype validation by designing a Qt graphical interface that eliminated software barriers for hardware testing and enforced safe operational limits during leg experimentation
+          check:
+            verdict: faithful
+            confidence: 1
+  kind: project
+  title: "Rice Robotics Club: R\\&D Software Lead"
+- id: ricehacks
+  duration: September 2024
+  bullets:
+    - id: hacks-matching
+      text: Built a full-stack app pairing students as accountability partners by interest using vector similarity, for RiceHacks 2024
+      tags: [ express, full-stack, hackathon, mongodb, react, vector-search ]
+      variants:
+        - id: hacks-matching.v1
+          text: Built a full-stack web app in React, Express, and MongoDB pairing students as accountability partners by interest using vector similarity, for RiceHacks 2024
+          check:
+            verdict: faithful
+            confidence: 0.95
+    - id: hacks-chat
+      text: Implemented real-time chat between matched users over WebSockets; earned 70\% match satisfaction from participants
+      tags: [ full-stack, real-time, websockets ]
+  kind: project
+  title: Social Accountability Web App using React, Express, MongoDB, WebSockets

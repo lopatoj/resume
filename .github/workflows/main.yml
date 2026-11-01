@@ -9,4 +9,5 @@ jobs:
       - name: Compile LaTeX document
         uses: dante-ev/latex-action@latest
         with:
+          working_directory: latex
           root_file: resume.tex

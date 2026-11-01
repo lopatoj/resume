@@ -1,0 +1,145 @@
+// All text fields hold LaTeX source (e.g. `\&`, `20\%`).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/lib/server/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// Single row (id = 1): contact details, education, awards. Never sent to Claude.
+model Profile {
+  id         Int     @id @default(1)
+  name       String
+  email      String
+  phone      String
+  linkedin   String
+  github     String
+  website    String
+  university String
+  college    String
+  graduation String
+  gpa        String
+  program    String
+  coursework String?
+  awards     String
+}
+
+model SkillGroup {
+  id        Int     @id @default(autoincrement())
+  category  String  @unique
+  sortOrder Int
+  skills    Skill[]
+}
+
+model Skill {
+  id        Int        @id @default(autoincrement())
+  name      String
+  sortOrder Int
+  groupId   Int
+  group     SkillGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  jobs      JobSkill[]
+
+  @@unique([groupId, name])
+}
+
+enum ExperienceKind {
+  experience
+  project
+}
+
+// A role (company/location/position) or a project (title).
+model Experience {
+  id        String         @id
+  kind      ExperienceKind
+  sortOrder Int
+  company   String?
+  location  String?
+  position  String?
+  title     String?
+  duration  String
+  bullets   Bullet[]
+}
+
+model Bullet {
+  id           String      @id
+  text         String
+  sortOrder    Int
+  experienceId String
+  experience   Experience  @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  tags         BulletTag[]
+  variants     Variant[]
+  selections   JobBullet[]
+}
+
+model BulletTag {
+  bulletId String
+  tag      String
+  bullet   Bullet @relation(fields: [bulletId], references: [id], onDelete: Cascade)
+
+  @@id([bulletId, tag])
+}
+
+// An alternate phrasing of a bullet, written by hand or by Claude while tailoring.
+model Variant {
+  id              String      @id
+  text            String
+  sortOrder       Int
+  bulletId        String
+  bullet          Bullet      @relation(fields: [bulletId], references: [id], onDelete: Cascade)
+  // Jev's faithfulness check of a Claude rewrite: verdict and its confidence.
+  checkVerdict    String?
+  checkConfidence Float?
+  // Job that produced this phrasing; kept when that job is deleted.
+  jobSlug         String?
+  job             Job?        @relation(fields: [jobSlug], references: [slug], onDelete: SetNull)
+  selections      JobBullet[]
+}
+
+// One application. `base` is the general resume that new jobs start from.
+model Job {
+  slug         String      @id
+  title        String
+  company      String
+  description  String
+  rationale    String?
+  // Jev's relevance scores from the latest tailoring (see Relevance in src/lib/types.ts).
+  relevance    Json?
+  // Guided tailoring state; shapes are Requirements, Coverage, Analysis and Guide in src/lib/types.ts.
+  requirements Json?
+  coverage     Json?
+  analysis     Json?
+  guide        Json?
+  // When false the resume lists every profile skill and `skills` is ignored.
+  customSkills Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  bullets      JobBullet[]
+  skills       JobSkill[]
+  variants     Variant[]
+}
+
+// A bullet on a job's resume. Experiences appear in register order; bullets in sortOrder.
+model JobBullet {
+  jobSlug   String
+  bulletId  String
+  sortOrder Int
+  variantId String?
+  job       Job      @relation(fields: [jobSlug], references: [slug], onDelete: Cascade)
+  bullet    Bullet   @relation(fields: [bulletId], references: [id], onDelete: Cascade)
+  variant   Variant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@id([jobSlug, bulletId])
+}
+
+model JobSkill {
+  jobSlug   String
+  skillId   Int
+  sortOrder Int
+  job       Job    @relation(fields: [jobSlug], references: [slug], onDelete: Cascade)
+  skill     Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([jobSlug, skillId])
+}
